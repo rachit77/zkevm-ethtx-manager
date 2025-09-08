@@ -670,7 +670,7 @@ func (c *Client) monitorTx(ctx context.Context, mTx *monitoredTxnIteration, logg
 			if err != nil {
 				logger.Warnf("failed to send tx %v to network: %v", signedTx.Hash().String(), err)
 				// Add a warning with a curl command to send the transaction manually
-				logger.Warnf(`To manually send the transaction, use the following curl command: 
+				logger.Warnf(`To manually send the transaction, use the following curl command:
 						%s"`, curlCommandForTx(signedTx))
 
 				return
@@ -772,6 +772,7 @@ func (c *Client) shouldContinueToMonitorThisTx(ctx context.Context, receipt *eth
 	if err != nil {
 		// if the error when getting the revert message is not identified, continue to monitor
 		if err.Error() == ErrExecutionReverted.Error() {
+			log.Errorf("RACHIT_DEBUG: ErrExecutionReverted hit for tx %v: %v", receipt.TxHash.String(), err)
 			return true
 		} else {
 			log.Errorf(
