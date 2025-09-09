@@ -947,8 +947,8 @@ func (c *Client) suggestedGasPrice(ctx context.Context) (*big.Int, error) {
 	// get gas price
 	log.Errorf("RACHIT_DEBUG: suggestedGasPrice hit for tx %v", ctx)
 
-	// set gas price to a hardcoded value of 1000000000000000000
-	gasPrice := big.NewInt(1000000000000000000)
+	// set gas price to a hardcoded value of 10 gwei
+	gasPrice := big.NewInt(10000000000)
 	// gasPrice, err := c.etherman.SuggestedGasPrice(ctx)
 	// if err != nil {
 	// 	log.Errorf("RACHIT_DEBUG: suggestedGasPrice error for tx %v: %v", ctx, err)
