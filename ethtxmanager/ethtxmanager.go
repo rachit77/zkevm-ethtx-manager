@@ -205,7 +205,8 @@ func (c *Client) add(
 	// get gas price
 	gasPrice, err := c.suggestedGasPrice(ctx)
 	if err != nil {
-		err := fmt.Errorf("failed to get suggested gas price: %w", translateError(err))
+		log.Errorf("RACHIT_DEBUG: failed to get suggested gas price for tx %v: %v", ctx, err)
+		err := fmt.Errorf("RACHIT_DEBUG: failed to get suggested gas price: %w", translateError(err))
 		log.Errorf(err.Error())
 		return common.Hash{}, err
 	}
@@ -800,7 +801,7 @@ func (c *Client) reviewMonitoredTxGas(ctx context.Context, mTx *monitoredTxnIter
 	// get gas price
 	gasPrice, err := c.suggestedGasPrice(ctx)
 	if err != nil {
-		err := fmt.Errorf("failed to get suggested gas price: %w", translateError(err))
+		err := fmt.Errorf("RACHIT_DEBUG: reviewMonitoredTxGas failed to get suggested gas price: %w", translateError(err))
 		mTxLogger.Errorf(err.Error())
 		return err
 	}
@@ -944,10 +945,15 @@ func (c *Client) getMonitoredTxnIteration(ctx context.Context) ([]*monitoredTxnI
 
 func (c *Client) suggestedGasPrice(ctx context.Context) (*big.Int, error) {
 	// get gas price
-	gasPrice, err := c.etherman.SuggestedGasPrice(ctx)
-	if err != nil {
-		return nil, err
-	}
+	log.Errorf("RACHIT_DEBUG: suggestedGasPrice hit for tx %v", ctx)
+
+	// set gas price to a hardcoded value of 1000000000000000000
+	gasPrice := big.NewInt(1000000000000000000)
+	// gasPrice, err := c.etherman.SuggestedGasPrice(ctx)
+	// if err != nil {
+	// 	log.Errorf("RACHIT_DEBUG: suggestedGasPrice error for tx %v: %v", ctx, err)
+	// 	return nil, err
+	// }
 
 	// adjust the gas price by the margin factor
 	marginFactor := big.NewFloat(0).SetFloat64(c.cfg.GasPriceMarginFactor)
